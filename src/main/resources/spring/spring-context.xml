@@ -9,9 +9,8 @@
 
     <!-- Topology Submission -->
     <bean id="exclamationTopologySubmission" class="storm.contrib.spring.topology.SingleTopologySubmission" c:topologyId="exclamationTopology" c:stormTopology-ref="exclamationTopology" p:config-ref="config"/>
-
     <!-- Topology Config -->
-    <bean id="config" class="backtype.storm.Config" p:debug="false"/>
+    <bean id="config" class="backtype.storm.Config" p:debug="false" p:numWorkers="1" p:maxTaskParallelism="16"/>
 
      <!-- Assembled Topologies -->
     <bean id="exclamationTopology" class="storm.contrib.spring.topology.TopologyFactory" c:spout-ref="topologySpouts" c:bolt-ref="topologyBolts"/>

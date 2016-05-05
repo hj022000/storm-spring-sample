@@ -7,6 +7,8 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 public class ExclamationBolt extends BaseRichBolt {
     private static final long serialVersionUID = -3086054753171924795L;
+    private static final Logger logger = LoggerFactory.getLogger(ExclamationBolt.class);
 
     OutputCollector _collector;
 
@@ -26,6 +29,7 @@ public class ExclamationBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple tuple) {
+        logger.info(tuple.getString(0));//日志输出到apache-storm-0.9.3\logs\worker-*.log
         _collector.emit(tuple, new Values(tuple.getString(0) + "!!!"));
         _collector.ack(tuple);
     }

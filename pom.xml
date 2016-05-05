@@ -72,7 +72,7 @@
         <!-- Define a resource location for spring xml configurations -->
         <resources>
             <resource>
-                <directory>${basedir}/src/main/resources/spring</directory>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
         </resources>
         <plugins>
@@ -106,11 +106,14 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                    <appendAssemblyId>true</appendAssemblyId>
-                    <descriptorRefs>
+                    <!--finalName>${project.artifactId}</finalName>
+                    <appendAssemblyId>true</appendAssemblyId-->
+                    <!--descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    </descriptorRefs-->
+                    <descriptors>
+                        <descriptor>src/main/assembly/storm-job.xml</descriptor>
+                    </descriptors>
                     <archive>
                         <manifest>
                             <mainClass>storm.contrib.spring.topology.TopologySubmitter</mainClass>
