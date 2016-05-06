@@ -94,6 +94,11 @@
             <artifactId>httpmime</artifactId>
             <version>${version.httpclient}</version>
         </dependency>
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>3.5.0</version>
+        </dependency>
     </dependencies>
 
     <build>
