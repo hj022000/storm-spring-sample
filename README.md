@@ -3,11 +3,14 @@ storm-spring-sample
 
 A sample of a Storm topology wired in Spring XML
 启动NIMBUS
-storm nimbus &
+./storm nimbus &
 启动SUPERVISOR
-storm supervisor &
+./storm supervisor &
 启动UI
-storm ui &
+./storm ui &
+
+控制台的地址：http://master.spark.com:8080/index.html
+
 一、在linux下面执行：
 1、下面这个命令执行服务器和172.30.39.110不是一个服务器，可以执行成功
 ./storm jar storm-spring-sample-1.0-job.jar storm.contrib.spring.topology.TopologySubmitter spring/spring-context.xml exclamationTopologySubmission -c nimbus.host=172.30.39.110
@@ -63,4 +66,7 @@ D:\resources\study\storm\apache-storm-0.9.3\bin>Exception in thread "main" java.
 scp apache-storm-0.9.3.tar.gz  root@192.168.120.129:/home/wuzhong/apache-storm-0.9.3.tar.gz
 
 scp storm-spring-sample-1.0-job.jar  root@192.168.120.129:/home/wuzhong/apache-storm-0.9.3/bin/storm-spring-sample-1.0-job.jar
+
+org.apache.http.client.HttpClient
+ava.lang.NoClassDefFoundError: org/apache/http/client/HttpClient at storm.contrib.solr.SolrBolt.prepare(SolrBolt.java:41) at backtype.storm.daemon.executor$fn__3441$fn__3453.invoke(executor.clj:692
 

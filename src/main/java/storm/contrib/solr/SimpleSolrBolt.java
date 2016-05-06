@@ -1,15 +1,10 @@
 package storm.contrib.solr;
 
-import java.util.Date;
-
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Tuple;
-
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
-import java.io.IOException;
-import org.apache.solr.client.solrj.SolrServerException;
+
+import java.util.Date;
 
 /**
  * A simple implementation of {@link SolrBolt} which attempts to map the input
@@ -36,7 +31,7 @@ public class SimpleSolrBolt extends SolrBolt {
 	@Override
 	public SolrInputDocument getSolrInputDocumentForInput(Tuple input) {
 		SolrInputDocument document = new SolrInputDocument();
-		
+		document.addField("id",System.currentTimeMillis());
 		for (String field : input.getFields()) {
 			Object value = input.getValueByField(field);
 			if (isValidField(value)) {

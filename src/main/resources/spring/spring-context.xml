@@ -19,15 +19,19 @@
     </util:list>
     <util:list id="topologyBolts">
         <bean id="exclamationBolt1" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim1" c:stormBolt-ref="exclamationBoltImpl" p:boltGroupings-ref="exclamationGrouping1" p:parallelismHint="3"/>
-        <bean id="exclamationBolt2" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim2" c:stormBolt-ref="exclamationBoltImpl" p:boltGroupings-ref="exclamationGrouping2" p:parallelismHint="2"/>
+        <!--bean id="exclamationBolt2" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim2" c:stormBolt-ref="exclamationBoltImpl" p:boltGroupings-ref="exclamationGrouping2" p:parallelismHint="2"/-->
+        <bean id="simpleSolrBolt" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim2" c:stormBolt-ref="simpleSolrBolt" p:boltGroupings-ref="simpleSolrBoltGrouping" p:parallelismHint="2"/>
     </util:list>
 
     <!-- Grouping For Each Bolt -->
     <bean id="exclamationGrouping1" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="word"/>
     <bean id="exclamationGrouping2" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="exclaim1"/>
-
+    <bean id="simpleSolrBoltGrouping" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="exclaim1"/>
     <!-- Bolt And RichSpout Implementations -->
     <bean id="testWordSpoutImpl" class="backtype.storm.testing.TestWordSpout"/>
     <bean id="exclamationBoltImpl" class="storm.sample.bolt.ExclamationBolt"/>
+    <bean id="simpleSolrBolt" class="storm.contrib.solr.SimpleSolrBolt">
+        <constructor-arg value="http://master.spark.com:8983/solr/collection1"/>
+    </bean>
 
 </beans>
