@@ -52,7 +52,7 @@ public class SolrUpdateBolt extends BaseRichBolt {
     private final SolrMapper solrMapper;
     private final SolrCommitStrategy commitStgy;    // if null, acks every tuple
 
-    private SolrServer solrClient;
+    private CloudSolrServer solrClient;
     private OutputCollector collector;
     private List<Tuple> toCommitTuples;
     private int tickTupleInterval = DEFAULT_TICK_TUPLE_INTERVAL_SECS;
@@ -74,6 +74,8 @@ public class SolrUpdateBolt extends BaseRichBolt {
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         this.collector = collector;
         this.solrClient = new CloudSolrServer(solrConfig.getZkHostString());
+        this.solrClient.setDefaultCollection(solrConfig.getCollection());
+        this.solrClient.setIdField(solrConfig.getUniqueKeyField());
         this.toCommitTuples = new ArrayList<Tuple>(capacity());
     }
 

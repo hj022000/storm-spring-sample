@@ -30,7 +30,7 @@ import org.apache.storm.solr.config.SolrConfig;
 import java.io.IOException;
 
 public abstract class SolrTopology {
-    protected static String COLLECTION = "gettingstarted";
+    protected static String COLLECTION = "collection1";
 
     public void run(String[] args) throws Exception {
         final StormTopology topology = getTopology();
@@ -71,7 +71,7 @@ public abstract class SolrTopology {
 
     protected static SolrConfig getSolrConfig() {
         String zkHostString = "127.0.0.1:9983";  // zkHostString for Solr gettingstarted example
-        return new SolrConfig(zkHostString);
+        return new SolrConfig(zkHostString,"collection1","id");
     }
 
     protected static SolrServer getSolrClient() {

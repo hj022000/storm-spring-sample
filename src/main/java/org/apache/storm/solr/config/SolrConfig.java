@@ -29,21 +29,25 @@ import java.io.Serializable;
 public class SolrConfig implements Serializable {
     private final String zkHostString;
     private final int tickTupleInterval;
+    private final String collection;
+    private final String uniqueKeyField;
 
     /**
      * @param zkHostString Zookeeper host string as defined in the {@link CloudSolrServer} constructor
      * */
-    public SolrConfig(String zkHostString) {
-       this(zkHostString, 0);
+    public SolrConfig(String zkHostString,String collection,String uniqueKeyField) {
+       this(zkHostString,collection,uniqueKeyField, 0);
     }
 
     /**
      * @param zkHostString Zookeeper host string as defined in the {@link CloudSolrServer} constructor
      * @param tickTupleInterval interval for tick tuples
      * */
-    public SolrConfig(String zkHostString, int tickTupleInterval) {
+    public SolrConfig(String zkHostString,String collection,String uniqueKeyField, int tickTupleInterval) {
         this.zkHostString = zkHostString;
         this.tickTupleInterval = tickTupleInterval;
+        this.collection = collection;
+        this.uniqueKeyField = uniqueKeyField;
     }
 
     public String getZkHostString() {
@@ -52,6 +56,15 @@ public class SolrConfig implements Serializable {
 
     public int getTickTupleInterval() {
         return tickTupleInterval;
+    }
+
+    public String getCollection() {
+        return collection;
+    }
+
+
+    public String getUniqueKeyField() {
+        return uniqueKeyField;
     }
 
 }
