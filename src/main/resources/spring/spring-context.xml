@@ -19,20 +19,15 @@
     </util:list>
     <util:list id="topologyBolts">
         <bean id="exclamationBolt1" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim1" c:stormBolt-ref="exclamationBoltImpl" p:boltGroupings-ref="exclamationGrouping1" p:parallelismHint="3"/>
-        <!--bean id="exclamationBolt2" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim2" c:stormBolt-ref="exclamationBoltImpl" p:boltGroupings-ref="exclamationGrouping2" p:parallelismHint="2"/-->
-        <bean id="simpleSolrBolt" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="exclaim2" c:stormBolt-ref="simpleSolrBolt" p:boltGroupings-ref="simpleSolrBoltGrouping" p:parallelismHint="2"/>
+        <bean id="solrUpdateBolt" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="solrUpdate" c:stormBolt-ref="solrUpdateBolt" p:boltGroupings-ref="solrUpdateBoltGrouping" p:parallelismHint="2"/>
     </util:list>
 
     <!-- Grouping For Each Bolt -->
     <bean id="exclamationGrouping1" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="word"/>
-    <bean id="exclamationGrouping2" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="exclaim1"/>
-    <bean id="simpleSolrBoltGrouping" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="exclaim1"/>
+    <bean id="solrUpdateBoltGrouping" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="exclaim1"/>
     <!-- Bolt And RichSpout Implementations -->
     <bean id="testWordSpoutImpl" class="backtype.storm.testing.TestWordSpout"/>
     <bean id="exclamationBoltImpl" class="storm.sample.bolt.ExclamationBolt"/>
-    <bean id="simpleSolrBolt" class="storm.contrib.solr.SimpleSolrBolt">
-        <constructor-arg value="http://master.spark.com:8983/solr/collection1"/>
-    </bean>
 
     <bean id="solrConfig" class="org.apache.storm.solr.config.SolrConfig">
         <constructor-arg index="0" value="master.spark.com:2181/solr"/>
@@ -50,9 +45,19 @@
         <constructor-arg index="2" value="collection1"/>
     </bean>
 
-    <bean id="SolrFieldsMapperBuilder" class="org.apache.storm.solr.mapper.SolrFieldsMapper$Builder" >
+    <bean id="solrMapperBuilder" class="org.apache.storm.solr.mapper.SolrFieldsMapper$Builder" >
         <constructor-arg index="0" type="org.apache.storm.solr.schema.builder.SchemaBuilder" ref="restJsonSchemaBuilder"/>
         <constructor-arg index="1" type="java.lang.String" value="collection1"/>
         <property name="multiValueFieldToken" value="%"/>
+    </bean>
+
+    <bean id="solrMapper" class="storm.sample.solr.SolrMapperFactory">
+        <constructor-arg ref="solrMapperBuilder"/>
+    </bean>
+
+    <bean id="solrUpdateBolt" class="org.apache.storm.solr.bolt.SolrUpdateBolt">
+        <constructor-arg index="0" ref="solrConfig"/>
+        <constructor-arg index="1" ref="solrMapper"/>
+        <constructor-arg index="2" ref="countBasedCommit"/>
     </bean>
 </beans>
