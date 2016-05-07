@@ -34,4 +34,25 @@
         <constructor-arg value="http://master.spark.com:8983/solr/collection1"/>
     </bean>
 
+    <bean id="solrConfig" class="org.apache.storm.solr.config.SolrConfig">
+        <constructor-arg index="0" value="master.spark.com:2181/solr"/>
+        <constructor-arg index="1" value="collection1"/>
+        <constructor-arg index="2" value="id"/>
+    </bean>
+
+    <bean id="countBasedCommit" class="org.apache.storm.solr.config.CountBasedCommit">
+        <constructor-arg value="2"/>
+    </bean>
+
+    <bean id="restJsonSchemaBuilder" class="org.apache.storm.solr.schema.builder.RestJsonSchemaBuilder">
+        <constructor-arg index="0" value="master.spark.com"/>
+        <constructor-arg index="1" value="8983"/>
+        <constructor-arg index="2" value="collection1"/>
+    </bean>
+
+    <bean id="SolrFieldsMapperBuilder" class="org.apache.storm.solr.mapper.SolrFieldsMapper$Builder" >
+        <constructor-arg index="0" type="org.apache.storm.solr.schema.builder.SchemaBuilder" ref="restJsonSchemaBuilder"/>
+        <constructor-arg index="1" type="java.lang.String" value="collection1"/>
+        <property name="multiValueFieldToken" value="%"/>
+    </bean>
 </beans>
