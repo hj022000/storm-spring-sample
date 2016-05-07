@@ -55,7 +55,7 @@ public class SolrFieldsSpout extends BaseRichSpout {
 
     @Override
     public void nextTuple() {
-        Utils.sleep(100L);
+        Utils.sleep(1000L);
         final Random rand = new Random();
         final Values values = listValues.get(rand.nextInt(listValues.size()));
         collector.emit(values);

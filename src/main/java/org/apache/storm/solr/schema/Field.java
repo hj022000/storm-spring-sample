@@ -23,6 +23,9 @@ import java.io.Serializable;
 public class Field implements Serializable {
     private String name;
     private String type;
+    private String indexed;
+    private String multiValued;
+    private String stored;
 
     public String getName() {
         return name;
@@ -30,6 +33,18 @@ public class Field implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public String getIndexed() {
+        return indexed;
+    }
+
+    public String getMultiValued() {
+        return multiValued;
+    }
+
+    public String getStored() {
+        return stored;
     }
 
     public void setName(String name) {
@@ -40,11 +55,26 @@ public class Field implements Serializable {
         this.type = type;
     }
 
+    public void setIndexed(String indexed) {
+        this.indexed = indexed;
+    }
+
+    public void setMultiValued(String multiValued) {
+        this.multiValued = multiValued;
+    }
+
+    public void setStored(String stored) {
+        this.stored = stored;
+    }
+
     @Override
     public String toString() {
         return "Field{" +
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
+                ", indexed='" + indexed + '\'' +
+                ", multiValued='" + multiValued + '\'' +
+                ", stored='" + stored + '\'' +
                 '}';
     }
 }

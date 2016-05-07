@@ -18,23 +18,25 @@
 
 package org.apache.storm.solr.mapper;
 
-import static org.apache.storm.solr.schema.SolrFieldTypeFinder.FieldTypeWrapper;
-
 import backtype.storm.tuple.ITuple;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrRequest;
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.storm.solr.schema.Field;
 import org.apache.storm.solr.schema.FieldType;
 import org.apache.storm.solr.schema.Schema;
-import org.apache.storm.solr.schema.builder.SchemaBuilder;
 import org.apache.storm.solr.schema.SolrFieldTypeFinder;
+import org.apache.storm.solr.schema.builder.SchemaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.apache.storm.solr.schema.SolrFieldTypeFinder.FieldTypeWrapper;
 
 public class SolrFieldsMapper implements SolrMapper {
     private static final Logger log = LoggerFactory.getLogger(SolrFieldsMapper.class);
@@ -134,11 +136,21 @@ public class SolrFieldsMapper implements SolrMapper {
         for (String tupleField : tuple.getFields()) {
             FieldTypeWrapper fieldTypeWrapper = typeFinder.getFieldTypeWrapper(tupleField);
             if (fieldTypeWrapper != null) {
+                Field field = fieldTypeWrapper.getField();
                 FieldType fieldType = fieldTypeWrapper.getType();
-                if (fieldType.isMultiValued()) {
-                    addMultivalueFieldToDoc(doc, tupleField, tuple);
-                } else {
-                    addFieldToDoc(doc, tupleField, tuple);
+                field.getMultiValued();
+                if(StringUtils.equalsIgnoreCase(field.getMultiValued(),"null")){
+                    if (fieldType.isMultiValued()) {
+                        addMultivalueFieldToDoc(doc, tupleField, tuple);
+                    } else {
+                        addFieldToDoc(doc, tupleField, tuple);
+                    }
+                }else{
+                    if (StringUtils.equalsIgnoreCase(field.getMultiValued(), "true")) {
+                        addMultivalueFieldToDoc(doc, tupleField, tuple);
+                    } else {
+                        addFieldToDoc(doc, tupleField, tuple);
+                    }
                 }
             } else {
                 log.debug("Field [{}] does NOT match static or dynamic field declared in schema. Not added to document", tupleField);
