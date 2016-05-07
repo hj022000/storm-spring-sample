@@ -70,7 +70,7 @@ public abstract class SolrTopology {
     }
 
     protected static SolrConfig getSolrConfig() {
-        String zkHostString = "127.0.0.1:9983";  // zkHostString for Solr gettingstarted example
+        String zkHostString = "master.spark.com:2181/solr";  // zkHostString for Solr gettingstarted example
         return new SolrConfig(zkHostString,"collection1","id");
     }
 

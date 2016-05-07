@@ -38,7 +38,7 @@ public class SolrFieldsTopology extends SolrTopology {
 
     protected SolrMapper getSolrMapper() throws IOException {
         return new SolrFieldsMapper.Builder(
-                new RestJsonSchemaBuilder("localhost", "8983", COLLECTION), COLLECTION)
+                new RestJsonSchemaBuilder("master.spark.com", "8983", COLLECTION), COLLECTION)
                     .setMultiValueFieldToken("%").build();
     }
 

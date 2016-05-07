@@ -24,6 +24,7 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
+import backtype.storm.utils.Utils;
 import com.google.common.collect.Lists;
 import org.apache.storm.solr.util.TestUtil;
 
@@ -54,6 +55,7 @@ public class SolrFieldsSpout extends BaseRichSpout {
 
     @Override
     public void nextTuple() {
+        Utils.sleep(100L);
         final Random rand = new Random();
         final Values values = listValues.get(rand.nextInt(listValues.size()));
         collector.emit(values);
@@ -66,7 +68,7 @@ public class SolrFieldsSpout extends BaseRichSpout {
     }
 
     public Fields getOutputFields() {
-        return new Fields("id","date","dc_title","author","dynamic_field_txt","non_matching_field");
+        return new Fields("id","date_dt","title","content","dynamic_field_txt","ignored_matching_field");
     }
 
     @Override
