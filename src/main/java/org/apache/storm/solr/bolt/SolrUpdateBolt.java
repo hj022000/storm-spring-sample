@@ -88,7 +88,7 @@ public class SolrUpdateBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple tuple) {
         try {
-            if (TupleHelpers.isTickTuple(tuple)) {    // Don't add tick tuples to the SolrRequest
+            if (!TupleHelpers.isTickTuple(tuple)) {    // Don't add tick tuples to the SolrRequest
                 SolrRequest request = solrMapper.toSolrRequest(tuple);
                 solrClient.request(request);
             }
