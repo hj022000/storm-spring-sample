@@ -163,9 +163,9 @@
                 <configuration>
                     <mainClass>storm.contrib.spring.topology.LocalTopologySubmitter</mainClass>
                     <arguments>
-                        <argument>classpath:/spring-context.xml</argument>
+                        <argument>classpath:spring/spring-context-hdfs.xml</argument>
                         <argument>exclamationTopologySubmission</argument>
-                        <argument>100000</argument>
+                        <argument>10000</argument>
                     </arguments>
                 </configuration>
             </plugin>

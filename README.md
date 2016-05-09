@@ -71,3 +71,9 @@ scp storm-spring-sample-1.0-job.jar  root@192.168.120.129:/home/wuzhong/apache-s
 org.apache.http.client.HttpClient
 ava.lang.NoClassDefFoundError: org/apache/http/client/HttpClient at storm.contrib.solr.SolrBolt.prepare(SolrBolt.java:41) at backtype.storm.daemon.executor$fn__3441$fn__3453.invoke(executor.clj:692
 
+
+
+
+四、
+hadoop fs -ls /apps/output/wip
+hadoop fs -rm -r  /apps/output/wip/*

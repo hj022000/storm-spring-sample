@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <!-- Topology Submission -->
+    <bean id="exclamationTopologySubmission" class="storm.contrib.spring.topology.SingleTopologySubmission" c:topologyId="exclamationTopology" c:stormTopology-ref="exclamationTopology" p:config-ref="config"/>
+    <!-- Topology Config -->
+    <bean id="config" class="backtype.storm.Config" p:debug="true" p:numWorkers="1" p:maxTaskParallelism="6">
+    </bean>
+
+     <!-- Assembled Topologies -->
+    <bean id="exclamationTopology" class="storm.contrib.spring.topology.TopologyFactory" c:spout-ref="topologySpouts" c:bolt-ref="topologyBolts"/>
+    <util:list id="topologySpouts">
+        <bean id="hdfsSpout" class="storm.contrib.spring.topology.component.spout.RichSpout" c:componentId="hdfsSpout" c:stormSpout-ref="hdfsFieldsSpout" p:parallelismHint="2"/>
+    </util:list>
+    <util:list id="topologyBolts">
+        <bean id="hdfsBolt" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="hdfsBolt" c:stormBolt-ref="hdfsBolt" p:boltGroupings-ref="hdfsSpoutGrouping1" p:parallelismHint="3"/>
+    </util:list>
+
+    <!-- Grouping For Each Bolt -->
+    <bean id="hdfsSpoutGrouping1" class="storm.contrib.spring.topology.component.grouping.ShuffleBoltGrouping" c:componentId="hdfsSpout"/>
+    <!-- Bolt And RichSpout Implementations -->
+    <bean id="hdfsFieldsSpout" class="storm.sample.spout.hdfs.HdfsFieldsSpout"/>
+
+    <bean id="hdfsBolt" class="storm.sample.bolt.hdfs.HdfsBoltFactory">
+        <property name="config" ref="hdfsBoltConfig"/>
+    </bean>
+    <util:map id="hdfsBoltConfig" map-class="java.util.HashMap">
+        <entry key="bolt.hdfs.field.delimiter" value=","/>
+        <entry key="bolt.hdfs.field.names" value="id,date,title,content"/>
+        <entry key="bolt.hdfs.batch.size" value="3"/>
+        <entry key="bolt.hdfs.file.rotation.size.in.mb" value="12"/>
+        <entry key="bolt.hdfs.wip.file.path" value="/apps/output/wip/"/>
+        <entry key="bolt.hdfs.finished.file.path" value="/apps/output/finished/"/>
+        <entry key="bolt.hdfs.file.system.url" value="hdfs://master.spark.com:8020"/>
+    </util:map>
+</beans>
