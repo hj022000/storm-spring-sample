@@ -51,7 +51,7 @@
         <property name="multiValueFieldToken" value="%"/>
     </bean>
 
-    <bean id="solrMapper" class="storm.sample.solr.SolrMapperFactory">
+    <bean id="solrMapper" class="org.apache.storm.solr.mapper.SolrMapperFactory">
         <constructor-arg ref="solrMapperBuilder"/>
     </bean>
 
