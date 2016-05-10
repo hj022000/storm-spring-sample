@@ -1,33 +1,32 @@
 package storm.sample.bolt.jdbc;
 
-import com.google.common.collect.Maps;
 import org.apache.storm.jdbc.bolt.JdbcInsertBolt;
-import org.apache.storm.jdbc.common.ConnectionProvider;
-import org.apache.storm.jdbc.common.HikariCPConnectionProvider;
-import org.apache.storm.jdbc.mapper.JdbcMapper;
-import org.apache.storm.jdbc.mapper.SimpleJdbcMapper;
+import org.apache.storm.jdbc.bolt.JdbcInsertBoltSingleton;
 import org.springframework.beans.factory.FactoryBean;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by wuzhong on 2016/5/9.
  */
-public class JdbcBoltFactory implements FactoryBean<JdbcInsertBolt> {
+public class JdbcBoltFactory implements FactoryBean<JdbcInsertBoltSingleton>,Serializable {
+
+    private static final long serialVersionUID = -5686230406414221605L;
+
     @Override
-    public JdbcInsertBolt getObject() throws Exception {
-        Map hikariConfigMap = Maps.newHashMap();
-        hikariConfigMap.put("dataSourceClassName","com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hikariConfigMap.put("dataSource.url", "jdbc:mysql://10.10.30.200:3306/d_mob?zeroDateTimeBehavior=convertToNull");
-        hikariConfigMap.put("dataSource.user","mobtest");
-        hikariConfigMap.put("dataSource.password","tuniu520");
-        ConnectionProvider connectionProvider = new HikariCPConnectionProvider(hikariConfigMap);
-
-        String tableName = "users";
-        JdbcMapper simpleJdbcMapper = new SimpleJdbcMapper(tableName, connectionProvider);
-
-        JdbcInsertBolt userPersistanceBolt = new JdbcInsertBolt(connectionProvider, simpleJdbcMapper)
+    public JdbcInsertBoltSingleton getObject() throws Exception {
+        Map hikariConfigMap = new HashMap(){{
+            put("dataSourceClassName","com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+            put("dataSource.url", "jdbc:mysql://10.10.30.200:3306/d_mob?zeroDateTimeBehavior=convertToNull");
+            put("dataSource.user","mobtest");
+            put("dataSource.password","tuniu520");
+        }};
+        JdbcInsertBoltSingleton userPersistanceBolt = new JdbcInsertBoltSingleton()
                 .withTableName("users")
+                .withMapperTableName("users")
+                .withHikariConfigMap(hikariConfigMap)
                 .withQueryTimeoutSecs(30);
 //        JdbcInsertBolt userPersistanceBolt = new JdbcInsertBolt(connectionProvider, simpleJdbcMapper)
 //                .withInsertQuery("insert into user values (?,?)")
@@ -42,6 +41,6 @@ public class JdbcBoltFactory implements FactoryBean<JdbcInsertBolt> {
 
     @Override
     public boolean isSingleton() {
-        return false;
+        return true;
     }
 }

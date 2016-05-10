@@ -10,16 +10,16 @@
     <!-- Topology Submission -->
     <bean id="exclamationTopologySubmission" class="storm.contrib.spring.topology.SingleTopologySubmission" c:topologyId="exclamationTopology" c:stormTopology-ref="exclamationTopology" p:config-ref="config"/>
     <!-- Topology Config -->
-    <bean id="config" class="backtype.storm.Config" p:debug="true" p:numWorkers="1" p:maxTaskParallelism="6">
+    <bean id="config" class="backtype.storm.Config" p:debug="true" p:numWorkers="1" p:maxTaskParallelism="11">
     </bean>
 
      <!-- Assembled Topologies -->
     <bean id="exclamationTopology" class="storm.contrib.spring.topology.TopologyFactory" c:spout-ref="topologySpouts" c:bolt-ref="topologyBolts"/>
     <util:list id="topologySpouts">
-        <bean id="jdbcSpout" class="storm.contrib.spring.topology.component.spout.RichSpout" c:componentId="jdbcSpout" c:stormSpout-ref="jdbcFieldsSpout" p:parallelismHint="2"/>
+        <bean id="jdbcSpout" class="storm.contrib.spring.topology.component.spout.RichSpout" c:componentId="jdbcSpout" c:stormSpout-ref="jdbcFieldsSpout" p:parallelismHint="6"/>
     </util:list>
     <util:list id="topologyBolts">
-        <bean id="jdbcBolt" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="jdbcBolt" c:stormBolt-ref="jdbcBolt" p:boltGroupings-ref="jdbcSpoutGrouping" p:parallelismHint="3"/>
+        <bean id="jdbcBolt" class="storm.contrib.spring.topology.component.bolt.RichBolt" c:componentId="jdbcBolt" c:stormBolt-ref="jdbcBolt" p:boltGroupings-ref="jdbcSpoutGrouping" p:parallelismHint="4"/>
     </util:list>
 
     <!-- Grouping For Each Bolt -->
