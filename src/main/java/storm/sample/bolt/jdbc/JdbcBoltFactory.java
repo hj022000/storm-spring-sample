@@ -30,6 +30,8 @@ public class JdbcBoltFactory implements FactoryBean<JdbcInsertBoltSingleton>,Ser
                 .withQueryTimeoutSecs(30);
 //        JdbcInsertBolt userPersistanceBolt = new JdbcInsertBolt(connectionProvider, simpleJdbcMapper)
 //                .withInsertQuery("insert into user values (?,?)")
+//                .withMapperTableName("users")
+//                .withHikariConfigMap(hikariConfigMap)
 //                .withQueryTimeoutSecs(30);
         return userPersistanceBolt;
     }
@@ -38,7 +40,7 @@ public class JdbcBoltFactory implements FactoryBean<JdbcInsertBoltSingleton>,Ser
     public Class<?> getObjectType() {
         return JdbcInsertBolt.class;
     }
-
+    //其实对于storm这个地方无用的，一个线程一个blot实例
     @Override
     public boolean isSingleton() {
         return true;
