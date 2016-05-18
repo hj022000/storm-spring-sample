@@ -19,9 +19,9 @@ public class JdbcBoltFactory implements FactoryBean<JdbcInsertBoltSingleton>,Ser
     public JdbcInsertBoltSingleton getObject() throws Exception {
         Map hikariConfigMap = new HashMap(){{
             put("dataSourceClassName","com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-            put("dataSource.url", "jdbc:mysql://10.10.30.200:3306/d_mob?zeroDateTimeBehavior=convertToNull");
-            put("dataSource.user","mobtest");
-            put("dataSource.password","tuniu520");
+            put("dataSource.url", "jdbc:mysql://master.spark.com:3306/test?zeroDateTimeBehavior=convertToNull");
+            put("dataSource.user","test");
+            put("dataSource.password","test");
         }};
         JdbcInsertBoltSingleton userPersistanceBolt = new JdbcInsertBoltSingleton()
                 .withTableName("users")
